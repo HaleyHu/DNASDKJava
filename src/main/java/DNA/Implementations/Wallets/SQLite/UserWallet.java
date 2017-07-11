@@ -133,7 +133,7 @@ public class UserWallet extends Wallet {
     }
     
     @Override
-    protected DNA.Wallets.Contract[] loadContracts() {
+    public DNA.Wallets.Contract[] loadContracts() {
         try (WalletDataContext ctx = new WalletDataContext(dbPath())) {
         	Contract[] entities = ctx.getContracts();
         	DNA.Wallets.Contract[] contracts = new DNA.Wallets.Contract[entities.length];

@@ -116,7 +116,11 @@ public class UserWalletManager {
 		uw.close();;
 	}
 	public boolean hasFinishedSyncBlock() {
-		return hasFinishedSyncBlock();
+		try {
+			return uw.hasFinishedSyncBlock();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	/**
@@ -507,7 +511,7 @@ public class UserWalletManager {
 	
 	
 	// 获取账户
-	private Account getAccount(String address) {
+	public Account getAccount(String address) {
 		return uw.getAccount(uw.getContract(address).publicKeyHash);
 	}
 	// 获取地址
