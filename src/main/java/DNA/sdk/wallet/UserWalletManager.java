@@ -66,18 +66,15 @@ public class UserWalletManager {
 	
 	public static UserWalletManager getWallet(String path, String url, String accessToken) {
 		UserWalletManager wm = new UserWalletManager();
-		wm.initRestNode(url);
-		wm.setAccessToken(accessToken);
-		wm.initBlockchain();
+		wm.initBlockRestNode(url, accessToken);
+		wm.initRestNode(url, accessToken);
 		wm.initWallet(path);
-		wm.startSync();
 		return wm;
 	}
 	
 	public static UserWalletManager getWallet(String url, String accessToken) {
 		UserWalletManager wm = new UserWalletManager();
-		wm.initRestNode(url);
-		wm.setAccessToken(accessToken);
+		wm.initRestNode(url, accessToken);
 		return wm;
 	}
 	
@@ -87,16 +84,22 @@ public class UserWalletManager {
 		return wm;
 	}
 	
-	public void setRestUrl4Block() {
-		// ...
+	public void initBlockRestNode(String url, String token) {
+		Blockchain.register(new RestBlockchain(new RestNode(url, token)));
 	}
-	public void setRestUrl4Tx(String url) {
-		restNode = new RestNode(url);
+	
+	public void initRestNode(String url, String token) {
+		restNode = new RestNode(url, token);
+	}
+	
+	public void updateAccessToken(String token) {
+		restNode.setAccessToken(token);
 	}
 	
 	public UserWallet getWallet(){
 		return uw;
 	}
+	
 	private UserWalletManager() {
 	}
 	private void initWallet(String path) {
@@ -106,19 +109,15 @@ public class UserWalletManager {
 			uw = UserWallet.create(path, "0x123456");
 		}
 	}
-	private void startSync() {
+	public void startSyncBlock() {
 		uw.start();
 	}
-	public void stopSync() {
+	public void stopSyncBlock() {
 		uw.close();;
 	}
-	private void initRestNode(String url) {
-		restNode = new RestNode(url);
+	public boolean hasFinishedSyncBlock() {
+		return hasFinishedSyncBlock();
 	}
-	public void initBlockchain() {
-		Blockchain.register(new RestBlockchain(restNode));
-	}
-	
 	
 	/**
 	 * 创建单个账户
@@ -136,6 +135,20 @@ public class UserWalletManager {
 	// 
 	private String createAddress() {
 		return uw.getContract(Contract.createSignatureContract(uw.createAccount().publicKey).address()).address();
+	}
+	
+	public String createAccount(String prikey) {
+		Account acc = uw.createAccount(Helper.hexToBytes(prikey));
+		return uw.getContract(Contract.createSignatureContract(acc.publicKey).address()).address();
+	}
+	
+	/**
+	 * 导出当前账户管理器中所有账户地址
+	 * 
+	 * @return
+	 */
+	public List<String> export() {
+		return Arrays.stream(uw.getContracts()).map(p -> p.address()).collect(Collectors.toList());
 	}
 	
 	public String address2UInt160(String address) {

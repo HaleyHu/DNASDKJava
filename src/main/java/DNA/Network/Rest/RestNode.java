@@ -20,6 +20,11 @@ public class RestNode {
 		restClient = new RestClient(restUrl);
 	}
 	
+	public RestNode(String restUrl, String accessToken) {
+		restClient = new RestClient(restUrl);
+		setAccessToken(accessToken);
+	}
+	
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
@@ -38,7 +43,7 @@ public class RestNode {
 	}
 	
 	public Transaction getRawTransaction(String txid) throws RestException {
-		String rs = restClient.getTransaction(authType, accessToken, Helper.reverse(txid));
+		String rs = restClient.getTransaction(authType, accessToken, txid);
 		Result rr = JSON.parseObject(rs, Result.class);
 		if(rr.Error == 0) {
 			try {

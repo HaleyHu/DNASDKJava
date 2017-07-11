@@ -297,4 +297,8 @@ public class UserWallet extends Wallet {
     public String getWalletPath() {
     	return dbPath();
     }
+    
+    public boolean hasFinishedSyncBlock() throws Exception {
+    	return Blockchain.current().height() == walletHeight();
+    }
 }
