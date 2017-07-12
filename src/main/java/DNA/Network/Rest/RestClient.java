@@ -9,7 +9,6 @@ import java.util.Map;
 
 
 public class RestClient {
-	
 	public RestClient(String url) {
 		Consts.setRestUrl(url);
 	}
@@ -94,6 +93,30 @@ public class RestClient {
 			throw new RestException("Invalid url:"+e.getMessage());
 		}
 	}
+	
+	public String getUTXOs(String authType, String accessToken, String address, String assetid) throws RestException {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("auth_type", authType);
+		params.put("access_token", accessToken);
+		try {
+			return RestHttp.get(Consts.Url_get_transaction_utxo + address + "/" + assetid, params);
+		} catch (KeyManagementException | NoSuchAlgorithmException
+				| NoSuchProviderException | IOException e) {
+			throw new RestException("Invalid url:"+e.getMessage());
+		}
+	}
+	
+	public String getBalance(String authType, String accessToken, String address) throws RestException {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("auth_type", authType);
+		params.put("access_token", accessToken);
+		try {
+			return RestHttp.get(Consts.Url_get_account_balance + address, params);
+		} catch (KeyManagementException | NoSuchAlgorithmException
+				| NoSuchProviderException | IOException e) {
+			throw new RestException("Invalid url:"+e.getMessage());
+		}
+	}
 	// ****************************************************************************************************8
 	public String getTransactionJson(String authType, String accessToken, String txid) throws RestException {
 		Map<String, String> params = new HashMap<String, String>();
@@ -139,6 +162,8 @@ class Consts {
 		Url_get_block_height = url + "/api/v1/block/height";
 		Url_get_block_By_Height = url + "/api/v1/block/details/height/";
 		Url_get_block_By_Hash = url + "/api/v1/block/details/hash/";
+		Url_get_transaction_utxo = url + "/api/v1/asset/utxo/";
+		Url_get_account_balance = url + "/api/v1/asset/balance/";
 	}
 
 	public static String Url_send_transaction = "/api/v1/transaction";
@@ -147,4 +172,6 @@ class Consts {
 	public static String Url_get_block_height = "/api/v1/block/height";
 	public static String Url_get_block_By_Height = "/api/v1/block/details/height/";
 	public static String Url_get_block_By_Hash = "/api/v1/block/details/hash/";
+	public static String Url_get_transaction_utxo = "/api/v1/asset/utxo/";
+	public static String Url_get_account_balance = "/api/v1/asset/balance/";
 }

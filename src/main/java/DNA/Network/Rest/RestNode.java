@@ -1,7 +1,9 @@
 package DNA.Network.Rest;
 
 import java.io.IOException;
+import java.util.List;
 
+import DNA.Fixed8;
 import DNA.Helper;
 import DNA.Core.Block;
 import DNA.Core.Transaction;
@@ -9,6 +11,7 @@ import DNA.IO.JsonReader;
 import DNA.IO.JsonSerializable;
 import DNA.IO.Serializable;
 import DNA.IO.Json.JObject;
+import DNA.sdk.info.asset.UTXOInfo;
 
 import com.alibaba.fastjson.JSON;
 
@@ -56,15 +59,6 @@ public class RestNode {
 		throw new RestRuntimeException(rr.toString());
 	}
 	
-	public String getAsset(String assetid) throws RestException {
-		String rs = restClient.getAsset(authType, accessToken, assetid);
-		Result rr = JSON.parseObject(rs, Result.class);
-		if(rr.Error != 0) {
-			throw new RestRuntimeException(rr.toString());
-		}
-		return rr.Result;
-	}
-	
 	public int getBlockHeight() throws RestException {
 		String rs = restClient.getBlockHeight(authType, accessToken);
 		Result rr = JSON.parseObject(rs, Result.class);
@@ -103,11 +97,38 @@ public class RestNode {
 		
 	}
 	
+	
+	public String getAsset(String assetid) throws RestException {
+		String rs = restClient.getAsset(authType, accessToken, assetid);
+		Result rr = JSON.parseObject(rs, Result.class);
+		if(rr.Error != 0) {
+			throw new RestRuntimeException(rr.toString());
+		}
+		return rr.Result;
+	}
+	
+	public List<UTXOInfo> getUTXOs(String address, String assetid) throws RestException {
+		String rs = restClient.getUTXOs(assetid, assetid, address, assetid);
+		Result rr = JSON.parseObject(rs, Result.class);
+		if(rr.Error == 0) {
+			return JSON.parseArray(rr.Result, UTXOInfo.class);
+		}
+		throw new RestRuntimeException(rr.toString());
+	}
+	
+	public long getBalance(String address) throws RestException {
+		String rs = restClient.getBalance(address, address, address);
+		Result rr = JSON.parseObject(rs, Result.class);
+		if(rr.Error == 0) {
+			return Long.parseLong(rr.Result);
+		}
+		throw new RestRuntimeException(rr.toString());
+	}
+	
 	// ********************************************************************************
 	public Transaction getRawTransactionJson(String txid) throws RestException {
 		String rs = restClient.getTransaction(authType, accessToken, txid);
 		Result rr = JSON.parseObject(rs, Result.class);
-		System.out.println("rr:"+rr);
 		if(rr.Error == 0) {
 			try {
 				return Transaction.fromJsonD(new JsonReader(JObject.parse(rr.Result)));

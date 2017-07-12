@@ -13,6 +13,7 @@ import DNA.Network.Rest.RestNode;
 import DNA.sdk.info.account.AccountAsset;
 import DNA.sdk.info.account.AccountInfo;
 import DNA.sdk.info.asset.AssetInfo;
+import DNA.sdk.info.asset.UTXOInfo;
 import DNA.sdk.info.transaction.TransactionInfo;
 import DNA.sdk.wallet.UserWalletManager;
 
@@ -25,15 +26,9 @@ import DNA.sdk.wallet.UserWalletManager;
 public class DNASDKDemo {
 
 	public static void main(String[] args) throws Exception {
-		
-		
-		boolean ff = true;
-		if(ff) {
-			
-		}
 		Arrays.stream(IVersion.versionInfo).forEach(p -> print(p));
 		// 实例化账户管理类
-		String path = "./a02.db3";			// 钱包文件
+		String path = "./a04.db3";			// 钱包文件
 		String url = "http://139.196.115.69:20334";		// DNA rest // zx
 		String token = "";	// 访问令牌，可从认证服务器获取
 		UserWalletManager wm = UserWalletManager.getWallet(path, url, token);
@@ -52,7 +47,7 @@ public class DNASDKDemo {
 		print("user3:"+addr3 + ","+wm.address2UInt160(addr3));
 		
 		boolean flag = true;
-		if(flag) {
+		if(!flag) {
 			Transaction tx = null;
 			String txHex = null;
 			boolean rr = false;
@@ -90,6 +85,17 @@ public class DNASDKDemo {
 			
 			// 账户管理器
 			System.out.println("#######################################################################################");
+		}
+		if(flag) {
+			// 获取utxo
+			String address = "AdEmWiQBDfYMkW6Eew2J8YxPRAAseDmq1U";
+			String assetid = "6146c60e384c0a0c1e276cc097cac73da98875b905a50d0cdf89bdffbdfc8aa0";
+			List<UTXOInfo> utxo = wm.getUTXOs(address, assetid);
+			System.out.println("utxo:"+utxo);
+			// 获取balance
+			long balance = wm.getBalance(address);
+			System.out.println("balance:"+balance);
+			
 		}
 		if(flag) {
 			// 初始化参数

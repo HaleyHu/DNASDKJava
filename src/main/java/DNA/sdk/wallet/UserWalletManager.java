@@ -40,6 +40,7 @@ import DNA.sdk.info.account.AccountAsset;
 import DNA.sdk.info.account.AccountInfo;
 import DNA.sdk.info.account.Asset;
 import DNA.sdk.info.asset.AssetInfo;
+import DNA.sdk.info.asset.UTXOInfo;
 import DNA.sdk.info.mutil.TxJoiner;
 import DNA.sdk.info.transaction.TransactionInfo;
 import DNA.sdk.info.transaction.TxInputInfo;
@@ -771,6 +772,22 @@ public class UserWalletManager {
 			throw new RuntimeException("Not find tx by next txInput");
 		}
 		return tx.outputs[input.prevIndex];
+	}
+	
+	public List<UTXOInfo> getUTXOs(String address, String assetid) {
+		try {
+			return restNode.getUTXOs(address, assetid);
+		} catch (RestException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public long getBalance(String address) {
+		try {
+			return restNode.getBalance(address);
+		} catch (RestException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public static Block fromWebSocketData(String ss) {
