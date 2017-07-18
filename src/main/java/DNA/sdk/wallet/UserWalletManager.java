@@ -688,13 +688,13 @@ public class UserWalletManager {
 		asset.address = con.address();
 		asset.canUseAssets = new ArrayList<Asset>();
 		asset.freezeAssets = new ArrayList<Asset>();
-		Arrays.stream(uw.findUnspentCoins()).forEach(p -> {
+		Arrays.stream(uw.findUnspentCoins()).filter(p -> Wallet.toAddress(p.scriptHash).equals(address)).forEach(p -> {
 			Asset as = new Asset();
 			as.assetid = p.assetId.toString();
 			as.amount = p.value.toLong();
 			asset.canUseAssets.add(as);
 		});
-		Arrays.stream(uw.findUnconfirmedCoins()).forEach(p -> {
+		Arrays.stream(uw.findUnconfirmedCoins()).filter(p -> Wallet.toAddress(p.scriptHash).equals(address)).forEach(p -> {
 			Asset as = new Asset();
 			as.assetid = p.assetId.toString();
 			as.amount = p.value.toLong();
