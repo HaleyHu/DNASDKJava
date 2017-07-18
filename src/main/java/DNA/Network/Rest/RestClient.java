@@ -163,7 +163,7 @@ class Consts {
 		Url_get_block_By_Height = url + "/api/v1/block/details/height/";
 		Url_get_block_By_Hash = url + "/api/v1/block/details/hash/";
 		Url_get_transaction_utxo = url + "/api/v1/asset/utxo/";
-		Url_get_account_balance = url + "/api/v1/asset/balance/";
+		Url_get_account_balance = url + "/api/v1/asset/balances/";
 	}
 
 	public static String Url_send_transaction = "/api/v1/transaction";
@@ -173,5 +173,5 @@ class Consts {
 	public static String Url_get_block_By_Height = "/api/v1/block/details/height/";
 	public static String Url_get_block_By_Hash = "/api/v1/block/details/hash/";
 	public static String Url_get_transaction_utxo = "/api/v1/asset/utxo/";
-	public static String Url_get_account_balance = "/api/v1/asset/balance/";
+	public static String Url_get_account_balance = "/api/v1/asset/balances/";
 }
