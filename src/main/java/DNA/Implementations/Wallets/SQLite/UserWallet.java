@@ -301,4 +301,11 @@ public class UserWallet extends Wallet {
     public boolean hasFinishedSyncBlock() throws Exception {
     	return Blockchain.current().height() == walletHeight();
     }
+    
+    public int getDnaBlockHeight() throws Exception {
+    	return Blockchain.current().height();
+    }
+    public int getLocalBlockHeight() {
+    	return walletHeight();
+    }
 }

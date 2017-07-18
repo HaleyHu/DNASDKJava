@@ -129,7 +129,6 @@ public class DNASDKDemo {
 			}
 		}
 		
-		
 		if(!flag) {
 		// 注册资产(资产控制者为addr1)
 		print("test regAsset..............................................[st]");

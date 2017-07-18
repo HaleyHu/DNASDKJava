@@ -116,12 +116,8 @@ public class UserWalletManager {
 	public void stopSyncBlock() {
 		uw.close();;
 	}
-	public boolean hasFinishedSyncBlock() {
-		try {
-			return uw.hasFinishedSyncBlock();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public boolean hasFinishedSyncBlock() throws Exception {
+		return uw.hasFinishedSyncBlock();
 	}
 	
 	/**
@@ -440,6 +436,7 @@ public class UserWalletManager {
 		} else {
 			throw new RuntimeException("Signature incompleted");
 		}
+		uw.saveTransaction(tx);
 		return Helper.toHexString(tx.toArray());
 	}
 	// 3. 发送交易
@@ -792,5 +789,15 @@ public class UserWalletManager {
 	
 	public static Block fromWebSocketData(String ss) {
 		return GetBlockTransactionUtils.from(ss);
+	}
+	
+	public void rebuild() {
+		uw.rebuild();
+	}
+	public int getDnaBlockHeight() throws Exception {
+		return uw.getDnaBlockHeight();
+	}
+	public int getLocalBlockHeight() {
+		return uw.getLocalBlockHeight();
 	}
 }
