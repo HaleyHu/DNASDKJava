@@ -791,7 +791,7 @@ public class UserWalletManager {
 		return GetBlockTransactionUtils.from(ss);
 	}
 	
-	public void rebuild() {
+	public void restartSyncBlock() {
 		uw.rebuild();
 	}
 	public int getDnaBlockHeight() throws Exception {

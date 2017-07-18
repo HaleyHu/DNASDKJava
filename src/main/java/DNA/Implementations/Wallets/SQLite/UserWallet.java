@@ -247,10 +247,10 @@ public class UserWallet extends Wallet {
             // 更新入库coin
             onCoinsChanged(ctx, added, changed, deleted);
             // 更新入库height
-            if (tx_changed.size() > 0 || added.length > 0 || changed.length > 0 || deleted.length > 0) {
+//            if (tx_changed.size() > 0 || added.length > 0 || changed.length > 0 || deleted.length > 0) {
             	saveStoredData(ctx, "Height", ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(walletHeight()).array());
 	            ctx.commit();
-            }
+//            }
         }
     }
 
@@ -299,7 +299,7 @@ public class UserWallet extends Wallet {
     }
     
     public boolean hasFinishedSyncBlock() throws Exception {
-    	return Blockchain.current().height() == walletHeight();
+    	return Blockchain.current().height() + 1 == walletHeight();
     }
     
     public int getDnaBlockHeight() throws Exception {
